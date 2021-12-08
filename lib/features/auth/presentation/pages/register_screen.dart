@@ -2,11 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_code/core/constant/index.dart';
-import 'package:qr_code/core/shared_component/custom_button.dart';
-import 'package:qr_code/core/shared_component/custom_text.dart';
-import 'package:qr_code/core/shared_component/custom_toast.dart';
-import 'package:qr_code/core/shared_component/widget_helper.dart';
-import 'package:qr_code/core/util/global_utility.dart';
+import 'package:qr_code/core/common_widget/custom_button.dart';
+import 'package:qr_code/core/common_widget/custom_text.dart';
+import 'package:qr_code/core/common_widget/custom_toast.dart';
+import 'package:qr_code/core/common_widget/widget_helper.dart';
 import 'package:qr_code/features/auth/presentation/bloc/authenticate_bloc.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -27,6 +26,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthenticateBloc>().add(ClearOnPageLoad());
+  }
 
   @override
   Widget build(BuildContext context) {

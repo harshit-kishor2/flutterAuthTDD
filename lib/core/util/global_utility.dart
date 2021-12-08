@@ -14,6 +14,11 @@ int randomNumber() {
   return random.nextInt(1000);
 }
 
+int uuid() {
+  int date = DateTime.now().millisecondsSinceEpoch;
+  return date;
+}
+
 void printWarning(String text) {
   print('\x1B[33m$text\x1B[0m');
 }

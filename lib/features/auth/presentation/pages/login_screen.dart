@@ -1,14 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qr_code/core/common_widget/custom_text.dart';
+import 'package:qr_code/core/common_widget/custom_toast.dart';
+import 'package:qr_code/core/common_widget/widget_helper.dart';
 import 'package:qr_code/core/constant/index.dart';
-import 'package:qr_code/core/shared_component/custom_button.dart';
-import 'package:qr_code/core/shared_component/custom_text.dart';
-import 'package:qr_code/core/shared_component/custom_toast.dart';
-import 'package:qr_code/core/shared_component/widget_helper.dart';
+import 'package:qr_code/core/common_widget/custom_button.dart';
 import 'package:qr_code/core/util/global_utility.dart';
 import 'package:qr_code/features/auth/presentation/bloc/authenticate_bloc.dart';
-import 'package:qr_code/injection_container.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -19,12 +18,20 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   //Local states
+  final FocusNode focusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
   final bool _obscureText = true;
   bool changeButton = false;
-
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,18 +55,23 @@ class _LoginScreenState extends State<LoginScreen> {
 // Handle Listener
   void _handleState(context, state) {
     if (state is LoginLoadedState) {
-      printWarning('LoginLoadedState');
       toast("Login Successfully");
       Navigator.pushReplacementNamed(context, Routes.dashboard);
     } else if (state is AuthFailureState) {
-      printWarning('LoginLoadedState2');
       setState(() {});
       changeButton = false;
-      toast("Error:${state}");
+      toast("Error:${state.error}");
     } else if (state is AuthLoadingState) {
-      printWarning('LoginLoadedState3');
-      toast("Loading");
+      toast("Loading ! Please wait.....");
     }
+  }
+
+  String getError(state) {
+    var serverError = '';
+    if (state is AuthFailureState) {
+      serverError = state.error;
+    }
+    return serverError;
   }
 
   Container _getLoginComponent(context, state) {
@@ -73,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         children: [
           _getBox1(),
-          _getBox2(),
+          _getBox2(context, state),
         ],
       ),
     );
@@ -104,20 +116,28 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Container _getBox2() {
+  Container _getBox2(context, state) {
     return Container(
       padding: const EdgeInsets.all(10),
       child: Form(
         key: _formKey,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Text(
+              getError(state),
+              style: const TextStyle(
+                color: Colors.red,
+              ),
+            ),
             TextFormField(
               controller: _usernameController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
               validator: (v) {
                 String t = v ?? '';
-                return t.trim().isNotEmpty ? null : "Enter Username";
+                var error = t.trim().isNotEmpty ? null : "Enter Username";
+                return error;
               },
               decoration: textFieldStyle(
                   labelTextStr: "Username", hintTextStr: "Enter Username"),
@@ -157,6 +177,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
+                        _usernameController.text = '';
+                        _passwordController.text = '';
                         Navigator.pushNamed(context, Routes.register);
                       }),
               ]),

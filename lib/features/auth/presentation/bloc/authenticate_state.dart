@@ -12,10 +12,11 @@ class AuthenticateInitial extends AuthenticateState {}
 class AuthLoadingState extends AuthenticateState {}
 
 class AuthFailureState extends AuthenticateState {
-  const AuthFailureState();
+  final String error;
+  const AuthFailureState({required this.error});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [error];
 }
 
 class LoginLoadedState extends AuthenticateState {
@@ -33,5 +34,5 @@ class RegisterLoadedState extends AuthenticateState {
   });
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [userEntity];
 }

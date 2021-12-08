@@ -1,3 +1,4 @@
+//! Assign in main.dart file for all routes as (onGenerateRoute:RouteGenerator.generateRoute)
 import 'package:flutter/material.dart';
 import 'package:qr_code/core/constant/index.dart';
 import 'package:qr_code/core/util/global_utility.dart';
@@ -10,30 +11,31 @@ class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     printWarning('${settings.name}');
     switch (settings.name) {
-      //Splash Route
+      //! Splash Route
       case Routes.splash:
         return _GeneratePageRoute(
           widget: const SplashScreen(),
           routeName: settings.name,
         );
-      //Login Route
+      //! Login Route
       case Routes.login:
         return _GeneratePageRoute(
           widget: const LoginScreen(),
           routeName: settings.name,
         );
-      //Dashboard
+      //! Dashboard Route
       case Routes.dashboard:
         return _GeneratePageRoute(
           widget: const DashboardScreen(),
           routeName: settings.name,
         );
+      //! Register Route
       case Routes.register:
         return _GeneratePageRoute(
           widget: const RegisterScreen(),
           routeName: settings.name,
         );
-      //Default route
+      //! Default route (Invalid Url)
       default:
         return _GeneratePageRoute(
           widget: Container(
@@ -57,6 +59,7 @@ class RouteGenerator {
   }
 }
 
+//! Widget for generating routes with screen and route name
 class _GeneratePageRoute extends PageRouteBuilder {
   final Widget widget;
   final String? routeName;

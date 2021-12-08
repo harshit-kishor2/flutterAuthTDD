@@ -36,3 +36,5 @@ class RegisterButtonClicked extends AuthenticateEvent {
   @override
   List<Object> get props => [username, password, firstname, lastname, email];
 }
+
+class ClearOnPageLoad extends AuthenticateEvent {}

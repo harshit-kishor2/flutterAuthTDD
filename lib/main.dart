@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qr_code/core/shared_component/custom_theme.dart';
+import 'package:qr_code/core/common_widget/custom_theme.dart';
 import 'package:qr_code/features/auth/presentation/bloc/authenticate_bloc.dart';
 import 'package:qr_code/features/auth/presentation/pages/splash_screen.dart';
 import 'package:qr_code/injection_container.dart' as di;
@@ -28,10 +28,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Qr Code Scanner',
-      onGenerateRoute: RouteGenerator.generateRoute,
-      debugShowCheckedModeBanner: false,
-      theme: MyTheme.lightTheme(context),
-      home: const SplashScreen(),
+      onGenerateRoute: RouteGenerator.generateRoute, //for generating routes
+      debugShowCheckedModeBanner: false, // for hiding banner from debug
+      theme: MyTheme.lightTheme(context), // for global theme
+      home: const SplashScreen(), // Initial screen on start app
     );
   }
 }

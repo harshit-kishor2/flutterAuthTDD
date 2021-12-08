@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_code/core/shared_component/widget_helper.dart';
+import 'package:qr_code/core/common_widget/widget_helper.dart';
 import 'package:qr_code/core/util/global_utility.dart';
 
 class ColorConst {

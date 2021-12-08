@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:qr_code/core/constant/index.dart';
-import 'package:qr_code/core/shared_component/custom_text.dart';
+import 'package:qr_code/core/common_widget/custom_text.dart';
 
 Divider getDivider({
   double height = 10,

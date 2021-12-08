@@ -23,14 +23,18 @@ class LoginDataSourceImpl implements LoginDataSource {
 
   Future<LoginModel> _getDetail(
       Uri url, Map<String, String> headers, Object body) async {
-    final response =
-        await client.post((url), headers: headers, body: jsonEncode(body));
+    try {
+      final response =
+          await client.post((url), headers: headers, body: jsonEncode(body));
 
-    if (response.statusCode == 200) {
-      final decodedJson = json.decode(response.body);
-      return LoginModel.fromMap(decodedJson);
-    } else {
-      throw const BaseException(code: 500, message: 'Some Exception');
+      if (response.statusCode == 200) {
+        final decodedJson = json.decode(response.body);
+        return LoginModel.fromMap(decodedJson);
+      } else {
+        throw BaseFailure(code: response.statusCode, message: response.body);
+      }
+    } on Exception catch (e) {
+      throw BaseException(code: 500, message: e.toString());
     }
   }
 }

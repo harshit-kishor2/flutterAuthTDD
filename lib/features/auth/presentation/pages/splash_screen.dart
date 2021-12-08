@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code/core/constant/index.dart';
-import 'package:qr_code/core/shared_component/widget_helper.dart';
 import 'package:qr_code/core/util/global_utility.dart';
 import 'package:qr_code/core/util/shared_preference.dart';
 import 'package:qr_code/injection_container.dart';

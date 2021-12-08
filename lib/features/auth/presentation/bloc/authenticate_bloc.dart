@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:qr_code/core/util/global_utility.dart';
@@ -25,8 +27,14 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
       emit(AuthLoadingState());
       final loginFailedOrSuccess = await loginUseCase(
           LoginParams(username: event.username, password: event.password));
-      loginFailedOrSuccess.fold((l) => emit(const AuthFailureState()),
-          (r) => emit(LoginLoadedState(loginEntity: r)));
+      loginFailedOrSuccess.fold((l) {
+        var error = json.decode(l.message1);
+        printError('Errrororororo ${error['detail']}');
+        return emit(AuthFailureState(error: error["detail"]));
+      }, (r) {
+        printError('Successs $r');
+        return emit(LoginLoadedState(loginEntity: r));
+      });
     });
 
     //Register event
@@ -39,8 +47,13 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
           firstName: event.firstname,
           lastName: event.lastname));
       printWarning('registerFailedOrSuccess $registerFailedOrSuccess');
-      registerFailedOrSuccess.fold((l) => emit(const AuthFailureState()),
+      registerFailedOrSuccess.fold(
+          (l) => emit(AuthFailureState(error: l.message1)),
           (r) => emit(RegisterLoadedState(userEntity: r)));
+    });
+    //Clear event
+    on<ClearOnPageLoad>((event, emit) async {
+      emit(AuthenticateInitial());
     });
   }
 }
